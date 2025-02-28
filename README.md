@@ -27,6 +27,6 @@ Here are a few projects I've worked on:
 I'm always open to new ideas, collaborations, and learning opportunities. Feel free to reach out to me or check out my projects!
 
 - **Twitter**: [@your_twitter_handle](https://twitter.com/your_twitter_handle)
-- **LinkedIn**:(https://bd.linkedin.com/in/robin-ask-976745138))
+- **LinkedIn**:[ROBIN](https://bd.linkedin.com/in/robin-ask-976745138)
 
 Thank you for visiting my profile, and I look forward to connecting with fellow developers and tech enthusiasts!
