@@ -1,4 +1,4 @@
-# 👋 Hello, I'm [Mohamudullah Matubber (ROBIN)]!
+# 👋 As-salamu alaykum, I'm Mohamudullah Matubber (ROBIN)!
 
 Welcome to my GitHub profile! I'm a passionate beginner in full-stack development, specializing in Python and Django. I'm excited to learn and grow in the world of web development, and I'm eager to share my journey with you.
 
@@ -27,6 +27,6 @@ Here are a few projects I've worked on:
 I'm always open to new ideas, collaborations, and learning opportunities. Feel free to reach out to me or check out my projects!
 
 - **Twitter**: [@your_twitter_handle](https://twitter.com/your_twitter_handle)
-- **LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/your-linkedin)
+- **LinkedIn**:[ROBIN](https://bd.linkedin.com/in/robin-ask-976745138)
 
 Thank you for visiting my profile, and I look forward to connecting with fellow developers and tech enthusiasts!
