@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Web Page with Form & Local Storage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Section -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Logo</a>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Cover Image Section -->
+    <section class="cover-image">
+        <div class="cover-overlay">
+            <h1>Welcome to Responsive Web Page</h1>
+        </div>
+    </section>
+
+    <!-- Card Section -->
+    <section class="card-section">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1516321310766-78a3f159f293?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Card 1">
+            <div class="card-content">
+                <h3>Feature One</h3>
+                <p>Explore our amazing feature that enhances user experience.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1508739826987-b79f1f53764c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Card 2">
+            <div class="card-content">
+                <h3>Feature Two</h3>
+                <p>Discover the power of our innovative solutions.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Card 3">
+            <div class="card-content">
+                <h3>Feature Three</h3>
+                <p>Join us to experience top-notch services.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="form-container">
+            <h2>Contact Us</h2>
+            <div id="form-message"></div>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="saved-data" style="display: none;">
+                <h3>Saved Submissions</h3>
+                <ul id="submission-list"></ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Made with <span class="heart">❤</span> in Bangladesh by Robin.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
