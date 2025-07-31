@@ -1,31 +1,47 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.db.models import Q
+from .models import Job, Application
+from .forms import JobForm, ApplicationForm, CustomUserCreationForm
 from django.contrib import messages
-from .models import Job, Application, UserProfile
-from .forms import RegistrationForm, JobForm, ApplicationForm
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def dashboard(request):
+    profile = request.user.userprofile
+    if profile.role == 'employer':
+        return render(request, 'employer_dashboard.html', {'jobs': Job.objects.filter(posted_by=request.user)})
+    return render(request, 'applicant_dashboard.html', {'applications': Application.objects.filter(applicant=request.user)})
+
+@login_required
 def job_list(request):
-    jobs = Job.objects.all()
-    query = request.GET.get('q')
-    if query:
-        jobs = jobs.filter(title__icontains=query) | jobs.filter(company__icontains=query) | jobs.filter(location__icontains=query)
-    return render(request, 'jobs/job_list.html', {'jobs': jobs})
+    query = request.GET.get('q', '')
+    jobs = Job.objects.filter(
+        Q(title__icontains=query) | 
+        Q(company_name__icontains=query) | 
+        Q(location__icontains=query)
+    )
+    return render(request, 'job_list.html', {'jobs': jobs, 'query': query})
 
+@login_required
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
-    return render(request, 'jobs/job_detail.html', {'job': job})
+    return render(request, 'job_detail.html', {'job': job})
 
 @login_required
 def post_job(request):
-    try:
-        user_profile = request.user.userprofile
-        if user_profile.user_type != 'employer':
-            messages.error(request, "Only employers can post jobs.")
-            return redirect('job_list')
-    except ObjectDoesNotExist:
-        messages.error(request, "Please set up your user profile before posting a job.")
+    if request.user.userprofile.role != 'employer':
         return redirect('job_list')
     if request.method == 'POST':
         form = JobForm(request.POST)
@@ -33,23 +49,16 @@ def post_job(request):
             job = form.save(commit=False)
             job.posted_by = request.user
             job.save()
-            messages.success(request, "Job posted successfully.")
-            return redirect('job_list')
+            return redirect('dashboard')
     else:
         form = JobForm()
-    return render(request, 'jobs/post_job.html', {'form': form})
+    return render(request, 'job_form.html', {'form': form})
 
 @login_required
 def apply_job(request, job_id):
-    job = get_object_or_404(Job, id=job_id)
-    try:
-        user_profile = request.user.userprofile
-        if user_profile.user_type != 'applicant':
-            messages.error(request, "Only applicants can apply for jobs.")
-            return redirect('job_list')
-    except ObjectDoesNotExist:
-        messages.error(request, "Please set up your user profile before applying for a job.")
+    if request.user.userprofile.role != 'applicant':
         return redirect('job_list')
+    job = get_object_or_404(Job, id=job_id)
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -57,58 +66,43 @@ def apply_job(request, job_id):
             application.job = job
             application.applicant = request.user
             application.save()
-            messages.success(request, "Application submitted successfully.")
-            return redirect('job_list')
+            return redirect('dashboard')
     else:
         form = ApplicationForm()
-    return render(request, 'jobs/apply_job.html', {'form': form, 'job': job})
+    return render(request, 'application_form.html', {'form': form, 'job': job})
 
 @login_required
 def applications_list(request, job_id):
+    if request.user.userprofile.role != 'employer':
+        return redirect('job_list')
     job = get_object_or_404(Job, id=job_id)
-    if request.user != job.posted_by:
-        messages.error(request, "You can only view applications for your own jobs.")
+    if job.posted_by != request.user:
         return redirect('job_list')
     applications = Application.objects.filter(job=job)
-    return render(request, 'jobs/applications_list.html', {'job': job, 'applications': applications})
+    return render(request, 'applications_list.html', {'job': job, 'applications': applications})
+
+@login_required
+def update_application_status(request, application_id, status):
+    if request.user.userprofile.role != 'employer':
+        return redirect('job_list')
+    application = get_object_or_404(Application, id=application_id)
+    if application.job.posted_by != request.user:
+        return redirect('job_list')
+    if status in ['approved', 'rejected']:
+        application.status = status
+        application.save()
+        messages.success(request, f"Application status updated to {status.capitalize()}.")
+    return redirect('applications_list', job_id=application.job.id)
 
 @login_required
 def my_applications(request):
-    try:
-        user_profile = request.user.userprofile
-        if user_profile.user_type != 'applicant':
-            messages.error(request, "Only applicants can view their applications.")
-            return redirect('job_list')
-    except ObjectDoesNotExist:
-        messages.error(request, "Please set up your user profile to view your applications.")
+    if request.user.userprofile.role != 'applicant':
         return redirect('job_list')
+    status = request.GET.get('status', '')
     applications = Application.objects.filter(applicant=request.user)
-    return render(request, 'jobs/my_applications.html', {'applications': applications})
-
-@login_required
-def dashboard(request):
-    try:
-        user_profile = request.user.userprofile
-        if user_profile.user_type == 'employer':
-            jobs = Job.objects.filter(posted_by=request.user)
-            return render(request, 'jobs/dashboard.html', {'jobs': jobs, 'user_type': 'employer'})
-        else:
-            applications = Application.objects.filter(applicant=request.user)
-            return render(request, 'jobs/dashboard.html', {'applications': applications, 'user_type': 'applicant'})
-    except ObjectDoesNotExist:
-        messages.error(request, "Please set up your user profile to access the dashboard.")
-        return redirect('job_list')
-
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # Check if UserProfile already exists to avoid IntegrityError
-            if not UserProfile.objects.filter(user=user).exists():
-                UserProfile.objects.create(user=user, user_type=form.cleaned_data['user_type'])
-            messages.success(request, "Registration successful. Please log in.")
-            return redirect('login')
-    else:
-        form = RegistrationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    if status in ['pending', 'approved', 'rejected']:
+        applications = applications.filter(status=status)
+    return render(request, 'my_applications.html', {
+        'applications': applications,
+        'current_status': status
+    })
