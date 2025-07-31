@@ -1,0 +1,54 @@
+{
+    "bg_primary": "#343A40",
+    "bg_secondary": "#495057",
+    "bg_card": "#212529",
+    "fg_primary": "#F8F9FA",
+    "fg_secondary": "#CED4DA",
+    "border_color": "#6C757D",
+
+    "tab_active_bg": "#212529",
+    "tab_inactive_bg": "#343A40",
+    "tab_active_fg": "#F8F9FA",
+    "tab_inactive_fg": "#CED4DA",
+    "tab_font_active": ["TkDefaultFont", 10, "bold"],
+    "tab_font_inactive": ["TkDefaultFont", 10],
+
+    "button_bg": "#007BFF",
+    "button_fg": "#FFFFFF",
+    "button_hover_bg": "#0056B3",
+
+    "entry_bg": "#495057",
+    "entry_fg": "#F8F9FA",
+
+    "progress_bar_bg": "#28A745",
+    
+    "text_widget_bg": "#2B2B2B",
+    "text_widget_fg": "#F8F9FA",
+    "log_widget_bg": "#495057",
+    "log_widget_fg": "#F8F9FA",
+    "status_bar_bg": "#212529",
+    "status_bar_fg": "#FFFFFF",
+
+    "TNotebook.Tab": {},
+    "TLabel": {"background": "#343A40", "foreground": "#F8F9FA"},
+    "TButton": {"font": ["TkDefaultFont", 10, "bold"]},
+    "TEntry": {"fieldbackground": "#495057", "foreground": "#F8F9FA"},
+    "TCombobox": {"fieldbackground": "#495057", "foreground": "#F8F9FA"},
+    "TCheckbutton": {"background": "#343A40", "foreground": "#F8F9FA"},
+    "TProgressbar": {"background": "#28A745"},
+    "TFrame": {"background": "#343A40"},
+    "TLabelframe": {
+        "background": "#212529",
+        "bordercolor": "#6C757D",
+        "relief": "solid",
+        "borderwidth": 1
+    },
+    "TLabelframe.Label": {
+        "background": "#212529",
+        "foreground": "#F8F9FA",
+        "font": ["TkDefaultFont", 11, "bold"]
+    },
+    "Card.TFrame": {
+        "background": "#343A40"
+    }
+}
