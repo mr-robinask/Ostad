@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/jobs/css/styles.css">
+</head>
+<body>
+    <h2>Dashboard</h2>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if user_type == 'employer' %}
+        <h3>Your Posted Jobs</h3>
+        <ul>
+            {% for job in jobs %}
+                <li>
+                    <a href="{% url 'job_detail' job.id %}">{{ job.title }}</a> - {{ job.company }}
+                    (<a href="{% url 'applications_list' job.id %}">View Applications</a>)
+                </li>
+            {% empty %}
+                <li>No jobs posted yet.</li>
+            {% endfor %}
+        </ul>
+        <p><a href="{% url 'post_job' %}">Post a new job</a></p>
+    {% elif user_type == 'applicant' %}
+        <h3>Your Applications</h3>
+        <ul>
+            {% for application in applications %}
+                <li>
+                    <strong>Job:</strong> {{ application.job.title }}<br>
+                    <strong>Applied at:</strong> {{ application.applied_at }}
+                </li>
+            {% empty %}
+                <li>No applications submitted yet.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <p><a href="{% url 'job_list' %}">Back to job listings</a> | <a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>

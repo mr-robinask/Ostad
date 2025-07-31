@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ job.title }}</title>
+    <link rel="stylesheet" href="/static/jobs/css/styles.css">
+</head>
+<body>
+    <h2>{{ job.title }}</h2>
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+    <p><strong>Posted by:</strong> {{ job.posted_by.username }} on {{ job.posted_at }}</p>
+    {% if user.is_authenticated and user.userprofile.user_type == 'applicant' %}
+        <a href="{% url 'apply_job' job.id %}">Apply for this job</a>
+    {% endif %}
+    {% if user.is_authenticated and user == job.posted_by %}
+        <a href="{% url 'applications_list' job.id %}">View Applications</a>
+    {% endif %}
+    <p><a href="{% url 'job_list' %}">Back to job listings</a></p>
+</body>
+</html>

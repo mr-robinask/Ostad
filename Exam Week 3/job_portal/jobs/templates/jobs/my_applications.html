@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Applications</title>
+    <link rel="stylesheet" href="/static/jobs/css/styles.css">
+</head>
+<body>
+    <h2>My Applications</h2>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <ul>
+        {% for application in applications %}
+            <li>
+                <strong>Job:</strong> {{ application.job.title }}<br>
+                <strong>Cover Letter:</strong> {{ application.cover_letter }}<br>
+                <strong>Resume:</strong> <a href="{{ application.resume.url }}">Download</a><br>
+                <strong>Applied at:</strong> {{ application.applied_at }}
+            </li>
+        {% empty %}
+            <li>No applications submitted yet.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'job_list' %}">Back to job listings</a></p>
+</body>
+</html>

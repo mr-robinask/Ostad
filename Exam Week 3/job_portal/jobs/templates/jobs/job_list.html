@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="/static/jobs/css/styles.css">
+</head>
+<body>
+    <h2>Job Listings</h2>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'dashboard' %}">Dashboard</a> | <a href="{% url 'logout' %}">Logout</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a></p>
+    {% endif %}
+    <form method="get">
+        <input type="text" name="q" placeholder="Search jobs..." value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for job in jobs %}
+            <li>
+                <a href="{% url 'job_detail' job.id %}">{{ job.title }}</a> - {{ job.company }} ({{ job.location }})
+            </li>
+        {% empty %}
+            <li>No jobs found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
