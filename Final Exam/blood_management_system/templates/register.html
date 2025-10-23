@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="card-title text-center mb-4">Register as a Donor</h2>
+        <form method="post">
+          {% csrf_token %}
+          
+          <div class="alert alert-info">
+            First, create your account. Then, provide your donor profile details.
+          </div>
+
+          <fieldset class="mb-3">
+            <legend class="h5">Account Details</legend>
+            {{ user_form.as_p }}
+          </fieldset>
+          
+          <fieldset class="mb-3">
+            <legend class="h5">Profile Details</legend>
+            {{ profile_form.as_p }}
+          </fieldset>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-danger">Create Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

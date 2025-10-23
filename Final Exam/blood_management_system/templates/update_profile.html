@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="col-md-7">
+<div class="card shadow-sm">
+<div class="card-body p-4">
+<h2 class="card-title text-center mb-4">Update Your Profile</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      
+      <fieldset class="mb-3">
+        <legend class="h5">Account Details</legend>
+        {{ user_form.as_p }}
+      </fieldset>
+      
+      <fieldset class="mb-3">
+        <legend class="h5">Profile Details</legend>
+        {{ profile_form.as_p }}
+      </fieldset>
+      
+      <div class="d-grid">
+        <button type="submit" class="btn btn-danger">Save Changes</button>
+      </div>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'dashboard-donor' %}">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+
+</div>
+</div>
+{% endblock %}

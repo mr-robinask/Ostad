@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Donor Dashboard</h2>
+<hr>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+{{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="row">
+<div class="col-md-4">
+<div class="card shadow-sm mb-3">
+<div class="card-header d-flex justify-content-between align-items-center">
+My Profile
+<a href="{% url 'update-profile' %}" class="btn btn-outline-primary btn-sm">Update</a>
+</div>
+<div class="card-body">
+
+{% if profile %}
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Blood Group:</strong> {{ profile.blood_group }}</p>
+<p><strong>Phone:</strong> {{ profile.phone_number }}</p>
+<p><strong>Location:</strong> {{ profile.location }}</p>
+<p><strong>Status:</strong>
+{% if profile.is_available %}
+<span class="badge bg-success">Available</span>
+{% else %}
+<span class="badge bg-secondary">Not Available</span>
+{% endif %}
+</p>
+{% else %}
+<div class="alert alert-warning">
+Your profile is not complete.
+<a href="{% url 'update-profile' %}" class="alert-link">Please complete it now.</a>
+</div>
+{% endif %}
+</div>
+</div>
+
+{% if profile %}
+<div class="card shadow-sm">
+  <div class="card-header">Request a Donation</div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Submit Donation</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+
+</div>
+
+<!-- Donation History -->
+
+<div class="col-md-8">
+<div class="card shadow-sm">
+<div class="card-header">My Donation History</div>
+<div class="card-body">
+<table class="table">
+<thead>
+<tr>
+<th>Date</th>
+<th>Units</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for donation in donation_history %}
+<tr>
+<td>{{ donation.created_at|date:"Y-m-d" }}</td>
+<td>{{ donation.units_donated }}</td>
+<td>
+{% if donation.status == 'PENDING' %}
+<span class="badge bg-warning text-dark">Pending</span>
+{% elif donation.status == 'APPROVED' %}
+<span class="badge bg-success">Approved</span>
+{% else %}
+<span class="badge bg-danger">Rejected</span>
+{% endif %}
+</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3" class="text-center">No donation history.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
