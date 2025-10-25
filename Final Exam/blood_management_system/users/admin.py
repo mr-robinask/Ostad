@@ -12,7 +12,6 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('username', 'email', 'first_name', 'last_name', 'role', 'is_staff')
     
-    # Add 'role' to the fieldsets
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('role',)}),
     )
