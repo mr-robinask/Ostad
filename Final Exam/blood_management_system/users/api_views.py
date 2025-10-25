@@ -1,4 +1,5 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
 from .serializers import UserRegistrationSerializer, DonorProfileSerializer
 from .models import DonorProfile
 from django_filters.rest_framework import DjangoFilterBackend
