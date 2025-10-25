@@ -5,10 +5,6 @@ class DonorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DonorProfile
         fields = ['blood_group', 'phone_number', 'location', 'is_available']
-        extra_kwargs = {
-            'blood_group': {'required': True},
-            'phone_number': {'required': True},
-        }
 
 class UserSerializer(serializers.ModelSerializer):
     profile = DonorProfileSerializer()
@@ -33,7 +29,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             email=validated_data.get('email', ''),
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
-            role=CustomUser.Role.DONOR
+            role=CustomUser.Role.DONOR # API registration is for Donors
         )
         DonorProfile.objects.create(user=user, **profile_data)
         return user
